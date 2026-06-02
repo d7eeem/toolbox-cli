@@ -38,9 +38,14 @@ RUN wget -qO /tmp/eza.tar.gz \
     && mv /tmp/eza /usr/local/bin/ \
     && rm -rf /tmp/eza*
 
-# dua-cli
-RUN wget -qO /tmp/dua.tar.gz \
-        "https://github.com/Byron/dua-cli/releases/latest/download/dua-x86_64-unknown-linux-musl.tar.gz" \
+# dua-cli — uses API to resolve version; pass GITHUB_TOKEN as build-arg to avoid rate limits
+ARG GITHUB_TOKEN=""
+RUN DUA_VERSION=$(curl -s \
+        ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} \
+        https://api.github.com/repos/Byron/dua-cli/releases/latest \
+        | jq -r '.tag_name' | sed 's/v//') \
+    && wget -qO /tmp/dua.tar.gz \
+        "https://github.com/Byron/dua-cli/releases/latest/download/dua-v${DUA_VERSION}-x86_64-unknown-linux-musl.tar.gz" \
     && tar xzf /tmp/dua.tar.gz -C /tmp \
     && find /tmp -name dua -type f -exec mv {} /usr/local/bin/ \; \
     && rm -rf /tmp/dua*
