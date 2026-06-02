@@ -31,22 +31,18 @@ RUN apt-get update && apt-get install -y \
     # rsync \
     && rm -rf /var/lib/apt/lists/*
 
-# eza (exa successor) — not in Ubuntu repos, grab binary
-RUN EZA_VERSION=$(curl -s https://api.github.com/repos/eza-community/eza/releases/latest \
-        | jq -r '.tag_name' | sed 's/v//') \
-    && wget -qO /tmp/eza.tar.gz \
+# eza
+RUN wget -qO /tmp/eza.tar.gz \
         "https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-musl.tar.gz" \
     && tar xzf /tmp/eza.tar.gz -C /tmp \
     && mv /tmp/eza /usr/local/bin/ \
     && rm -rf /tmp/eza*
 
 # dua-cli
-RUN DUA_VERSION=$(curl -s https://api.github.com/repos/Byron/dua-cli/releases/latest \
-        | jq -r '.tag_name' | sed 's/v//') \
-    && wget -qO /tmp/dua.tar.gz \
-        "https://github.com/Byron/dua-cli/releases/latest/download/dua-v${DUA_VERSION}-x86_64-unknown-linux-musl.tar.gz" \
+RUN wget -qO /tmp/dua.tar.gz \
+        "https://github.com/Byron/dua-cli/releases/latest/download/dua-x86_64-unknown-linux-musl.tar.gz" \
     && tar xzf /tmp/dua.tar.gz -C /tmp \
-    && mv "/tmp/dua-v${DUA_VERSION}-x86_64-unknown-linux-musl/dua" /usr/local/bin/ \
+    && find /tmp -name dua -type f -exec mv {} /usr/local/bin/ \; \
     && rm -rf /tmp/dua*
 
 # yazi
