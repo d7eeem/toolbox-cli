@@ -1,0 +1,39 @@
+[[plugin.deps]]
+use = "Reledia/glow"
+rev = "2da96e3"
+hash = "f9ee1436e3b853508d87f7d49dce56e6"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-enter"
+rev = "63f9650"
+hash = "a7ab702e1ef0c097defbc976ed34c186"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:full-border"
+rev = "63f9650"
+hash = "3996fc74044bc44144b323686f887e1"
+
+[[plugin.deps]]
+use = "GrzegorzKozub/mdcat"
+rev = "7b7380a"
+hash = "40c20e6c1085d1f45309b9f148bf4f6e"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:git"
+rev = "19dc890"
+hash = "27ca02f49fd236b5cc7bf03c243859fe"
+
+[[plugin.deps]]
+use = "Lil-Dank/lazygit"
+rev = "8f37dc5"
+hash = "ee71543790f0ce3951161045a3787abd"
+
+[[flavor.deps]]
+use = "bennyyip/gruvbox-dark"
+rev = "91fdfa7"
+hash = "f48f510e5505f5d01e79c4f8257ec5cb"
+
+[[flavor.deps]]
+use = "Chromium-3-Oxide/everforest-medium"
+rev = "3d5f847"
+hash = "9b4190e2447f2c843fee23ea5f068f6"
