@@ -33,5 +33,3 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          build-args: |
-            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}

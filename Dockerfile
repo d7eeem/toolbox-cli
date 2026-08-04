@@ -38,12 +38,11 @@ RUN wget -qO /tmp/eza.tar.gz \
     && mv /tmp/eza /usr/local/bin/ \
     && rm -rf /tmp/eza*
 
-# dua-cli — uses API to resolve version; pass GITHUB_TOKEN as build-arg to avoid rate limits
-ARG GITHUB_TOKEN=""
-RUN DUA_VERSION=$(curl -s \
-        ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} \
-        https://api.github.com/repos/Byron/dua-cli/releases/latest \
-        | jq -r '.tag_name' | sed 's/v//') \
+# dua-cli — version resolved from the release redirect; needs no auth
+RUN DUA_VERSION=$(curl -sILo /dev/null -w '%{url_effective}' \
+        https://github.com/Byron/dua-cli/releases/latest \
+        | sed 's#.*/tag/v##') \
+    && [ -n "$DUA_VERSION" ] \
     && wget -qO /tmp/dua.tar.gz \
         "https://github.com/Byron/dua-cli/releases/latest/download/dua-v${DUA_VERSION}-x86_64-unknown-linux-musl.tar.gz" \
     && tar xzf /tmp/dua.tar.gz -C /tmp \
