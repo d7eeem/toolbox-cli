@@ -1,3 +1,11 @@
 services:
   toolbox:
+    build:
+      context: .
     image: ghcr.io/d7eeem/toolbox-cli:latest
+    container_name: toolbox
+    stdin_open: true
+    tty: true
+    working_dir: /work
+    volumes:
+      - ${TOOLBOX_MOUNT:-${HOME}}:/work
