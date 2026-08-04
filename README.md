@@ -6,7 +6,7 @@ A portable CLI toolbox Docker image based on Ubuntu 24.04, packed with common sy
 
 - **Files & disk**: ncdu, dua-cli, eza, fd-find, file, 7zip, zstd, pigz, unzip, unrar
 - **Media**: ffmpeg, ffmpegthumbnailer, mediainfo, exiftool, imagemagick
-- **Text & search**: neovim, ripgrep, bat, jq, fzf, less
+- **Text & search**: neovim, ripgrep, bat, jq, fzf, less, glow
 - **System**: htop, tmux, curl, wget, git
 - **Navigation**: yazi (terminal file manager)
 

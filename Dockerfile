@@ -56,6 +56,17 @@ RUN curl -Lo /tmp/yazi.zip \
     && mv /tmp/yazi/yazi*/yazi /usr/local/bin/ \
     && rm -rf /tmp/yazi*
 
+# glow — markdown renderer used by yazi's glow previewer
+RUN GLOW_VERSION=$(curl -sILo /dev/null -w '%{url_effective}' \
+        https://github.com/charmbracelet/glow/releases/latest \
+        | sed 's#.*/tag/v##') \
+    && [ -n "$GLOW_VERSION" ] \
+    && wget -qO /tmp/glow.tar.gz \
+        "https://github.com/charmbracelet/glow/releases/latest/download/glow_${GLOW_VERSION}_Linux_x86_64.tar.gz" \
+    && tar xzf /tmp/glow.tar.gz -C /tmp \
+    && find /tmp -name glow -type f -exec mv {} /usr/local/bin/ \; \
+    && rm -rf /tmp/glow*
+
 # Aliases
 RUN echo 'alias cat="batcat --paging=never"' >> /etc/bash.bashrc \
     && echo 'alias bat="batcat --paging=never"' >> /etc/bash.bashrc \

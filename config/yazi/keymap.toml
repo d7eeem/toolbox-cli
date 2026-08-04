@@ -16,8 +16,6 @@ keymap = [
 
   # mkdir & touch!!
   { on = "<C-n>", run = "mkdir", desc = "Create directory" },
-  { on = "n", run = "touch", desc = "Create file" },
-  { on = "N", run = "mkdir", desc = "Create directory" },
   # Hopping
   { on = "k", run = "arrow -1", desc = "Move cursor up" },
   { on = "j", run = "arrow 1", desc = "Move cursor down" },
@@ -44,7 +42,6 @@ keymap = [
   # Navigation
   { on = "h", run = "leave", desc = "Go back to the parent directory" },
   { on = "l", run = "enter", desc = "Enter the child directory" },
-  { on = "l", run = "open", desc = "Open selected files" },
 
   { on = "<Left>", run = "leave", desc = "Go back to the parent directory" },
   { on = "<Right>", run = "enter", desc = "Enter the child directory" },
@@ -92,14 +89,11 @@ keymap = [
   { on = ";", run = "shell --interactive", desc = "Run a shell command" },
   { on = ":", run = "shell --block --interactive", desc = "Run a shell command (block until finishes)" },
   { on = ".", run = "hidden toggle", desc = "Toggle the visibility of hidden files" },
-  { on = "z", run = "hidden toggle", desc = "Toggle the visibility of hidden files" },
   { on = "s", run = "search --via=fd", desc = "Search files by name via fd" },
   { on = "S", run = "search --via=rg", desc = "Search files by content via ripgrep" },
   { on = "<C-s>", run = "escape --search", desc = "Cancel the ongoing search" },
   # { on = "z", run = "plugin zoxide", desc = "Jump to a directory via zoxide" },
   { on = "Z", run = "plugin fzf", desc = "Jump to a file/directory via fzf" },
-  { on = "u", run = "shell --block --confirm 'upload.sh \"$@\"'", desc = "Upload selected files" },
-  { on = "b", run = "shell --block --confirm '/home/tinker/.local/bin/omarchy/bg-next \"$@\"'", desc = "bg-next"},
 
   # Linemode
   { on = [
