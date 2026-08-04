@@ -34,30 +34,21 @@ image_bound = [0, 0]
 suppress_preload = false
 
 [opener]
-play = [
-  { run = 'player.sh "$@"', orphan = true, for = "unix" },
-  { run = '"C:\Program Files\mpv.exe" %*', orphan = true, for = "windows" },
-]
 edit = [
   { run = '${EDITOR:=nvim} "$@"', desc = "$EDITOR", block = true, for = "unix" },
-  { run = 'nvim "%*"', desc = "$EDITOR", block = true, for = "windows" },
+]
+info = [
+  { run = 'mediainfo "$@" | less -R', desc = "Media info", block = true, for = "unix" },
+]
+exif = [
+  { run = 'exiftool "$@" | less -R', desc = "EXIF metadata", block = true, for = "unix" },
 ]
 extract = [
-  { run = '7zfm "%1"', desc = "Open in 7zfm", orphan = true, for = "windows" },
   { run = 'ya pub extract --list "$@"', desc = "Extract here", for = "unix" },
-  { run = 'ya pub extract --list %*', desc = "Extract here", for = "windows" },
-]
-view = [
-  { run = 'loupe "$@" || imv-dir "$@"', desc = "$EDITOR", block = true, for = "unix" },
 ]
 
 [open]
 rules = [
-  { url = "*.m3u", use = [
-    "play",
-    "edit",
-    "reveal",
-  ] },
   { url = "*/", use = [
     "edit",
     "open",
@@ -68,10 +59,12 @@ rules = [
     "reveal",
   ] },
   { mime = "image/*", use = [
-    "view",
+    "exif",
+    "edit",
+    "reveal",
   ] },
   { mime = "{audio,video}/*", use = [
-    "play",
+    "info",
     "reveal",
   ] },
   { mime = "application/{,g}zip", use = [
@@ -117,12 +110,6 @@ run = "git"
 
 [input]
 cursor_blink = false
-
-[[manager.prepend_keymap]]
-on = ["g", "i"]
-run = "plugin lazygit"
-desc = "run lazygit"
-
 # cd
 cd_title = "Change directory:"
 cd_origin = "top-center"

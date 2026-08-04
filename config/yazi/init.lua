@@ -1,5 +1,5 @@
 require("full-border"):setup {
-  typr = ui.Border, ROUNDED,
+  type = ui.Border.ROUNDED,
 }
 require("git"):setup()
 require("smart-enter"):setup {
