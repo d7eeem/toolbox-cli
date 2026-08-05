@@ -13,9 +13,9 @@ and update your row when done.
 | 001 | Make the README quick-start actually work, and stop tracking `.env` | P1 | S | — | DONE (merged, `403bf3c`) |
 | 002 | Stop baking `GITHUB_TOKEN` into the published image's build history | P1 | S | — | DONE (merged, `c19cf84`) |
 | 003 | Make the baked-in yazi config valid, and match it to what the image installs | P1 | M | — | DONE (merged, `d886adb`) |
-| 004 | Install the `ya` binary so yazi's archive extraction works | P1 | S | — | TODO |
-| 005 | Gate CI on a smoke test that proves every advertised tool runs | P1 | S | 004 (soft) | TODO |
-| 006 | Document the TrueNAS SCALE deployment path (additive only) | P2 | S | — | TODO |
+| 004 | Install the `ya` binary so yazi's archive extraction works | P1 | S | — | DONE (merged, `87dc56d`) |
+| 005 | Gate CI on a smoke test that proves every advertised tool runs | P1 | S | 004 (soft) | DONE (merged, `f86aad6`) |
+| 006 | Document the TrueNAS SCALE deployment path (additive only) | P2 | S | — | DONE (merged, `07ebfe7`) |
 | 007 | Pin tool versions and publish immutable SHA image tags | P2 | M | 005 (hard) | TODO — not executed, changes build behavior |
 | 008 | Run as a non-root user and harden for always-on use | P2 | M | 005 (hard), 006 (soft) | BLOCKED — breaking; needs a maintainer decision, see below |
 
@@ -88,9 +88,29 @@ Recorded so they are not re-argued:
 
 ## Prior-session branches (unmerged, superseded)
 
-Four branches predate this plan set, all forked from `09b4054` and now behind:
-`advisor/001-image-smoke-test`, `advisor/002-pin-versions`,
+Four branches predate this plan set, all forked from `09b4054` and now well
+behind: `advisor/001-image-smoke-test`, `advisor/002-pin-versions`,
 `advisor/003-compose-lifecycle`, `advisor/004-non-root`. Their design work has
 been salvaged into plans 005–008 — including the TrueNAS SCALE reasoning, which
-existed nowhere else in the repo. They can be deleted once 005–008 land; keeping
-them rebased is not worth the effort, since all four conflict with 001–003.
+existed nowhere else in the repo.
+
+They are **deliberately kept, not deleted**. Plans 005 and 006 supersede two of
+them outright, but 007 and 008 are not executed yet, and these branches are the
+only place their draft implementations exist. Delete them once 007 and 008 land:
+
+```bash
+git branch -D advisor/001-image-smoke-test advisor/002-pin-versions \
+              advisor/003-compose-lifecycle advisor/004-non-root
+```
+
+Note `-D` is required — they are not merged, and never will be.
+
+## First smoke-tested build
+
+Plan 005 landed the CI gate, so the build triggered by commit `07ebfe7` is the
+first one to run `test/smoke.sh`. If any binary name in its `TOOLS` list is
+wrong for this image, that build fails and **`:latest` is not overwritten** —
+the previously published image stays in place. A failure there is the gate
+working, not a regression. The names most likely to need an alternative added
+are `ffprobe`, `ffmpegthumbnailer`, and `exiftool`; 7-zip and ImageMagick
+already have alternatives.
