@@ -53,6 +53,32 @@ the `image:` field in `compose.yaml` to point at your registry of choice.
 Yazi configuration lives in `config/yazi/` and is baked into the image at build
 time. To customize, edit the files in `config/yazi/` and rebuild.
 
+## Deploying on TrueNAS SCALE
+
+This image targets TrueNAS SCALE, an always-on storage appliance where you
+can't install native packages and anything you did install wouldn't survive an
+OS update. A persistent container you `docker exec` into is the durable way to
+keep these tools around.
+
+Two things differ from a desktop setup:
+
+**Mount your datasets, not your home directory.** The default mount is the
+host `$HOME`, which on a NAS is not where your data lives. Either set
+`TOOLBOX_MOUNT` in `.env` to a pool path:
+
+```bash
+TOOLBOX_MOUNT=/mnt/tank
+```
+
+or uncomment and edit the per-dataset examples in `compose.yaml` for finer
+control over what the container can reach. Pool and dataset names are specific
+to your installation, so nothing is mounted by default.
+
+**Files are created as root.** The container runs as root, so anything it
+writes into a mounted dataset is owned by `root`. If that conflicts with how
+other apps access those datasets, you will need to `chown` afterwards. Running
+as a non-root user with a matching UID/GID is tracked as a separate change.
+
 ## Aliases (included in image)
 
 - `cat` -> `batcat --paging=never`
