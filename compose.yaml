@@ -8,4 +8,11 @@ services:
     tty: true
     working_dir: /work
     volumes:
+      # Default: your home directory, overridable with TOOLBOX_MOUNT in .env.
       - ${TOOLBOX_MOUNT:-${HOME}}:/work
+      # On TrueNAS SCALE, mount the datasets you want the toolbox to reach
+      # instead. Pool and dataset names are specific to your installation —
+      # edit these before uncommenting, and see "Deploying on TrueNAS SCALE"
+      # in README.md.
+      # - /mnt/tank/media:/work/media
+      # - /mnt/tank/downloads:/work/downloads
