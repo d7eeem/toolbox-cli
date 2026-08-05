@@ -105,12 +105,35 @@ git branch -D advisor/001-image-smoke-test advisor/002-pin-versions \
 
 Note `-D` is required — they are not merged, and never will be.
 
+| 009 | Set up Buildx so the GHA cache export works | P0 | S | — | DONE (merged, `37c541d`) |
+
 ## First smoke-tested build
 
-Plan 005 landed the CI gate, so the build triggered by commit `07ebfe7` is the
-first one to run `test/smoke.sh`. If any binary name in its `TOOLS` list is
-wrong for this image, that build fails and **`:latest` is not overwritten** —
-the previously published image stays in place. A failure there is the gate
-working, not a regression. The names most likely to need an alternative added
-are `ffprobe`, `ffmpegthumbnailer`, and `exiftool`; 7-zip and ImageMagick
-already have alternatives.
+**Resolved — CI is green as of run `30964910100` on commit `2fa231d`.**
+
+History: plan 005's CI gate initially broke the build, because it added
+`cache-to: type=gha` without a builder that can export cache. Runs on `07ebfe7`
+and `e2ab713` failed at `Build`, before the smoke test ran, so `:latest` was
+never overwritten — the gate's fail-safe behaved correctly. Plan 009 added
+`docker/setup-buildx-action` and CI now passes end to end:
+
+```
+ 4. success  Set up Buildx
+ 5. success  Build
+ 6. success  Smoke test
+ 7. success  Push
+```
+
+The smoke test **passed on its first real execution**, which validates the whole
+`TOOLS` list — all 30 binaries, including `ya` and `glow`, are present in the
+built image. No alternatives beyond the 7-zip and ImageMagick ones were needed.
+
+### Side effect to be aware of
+
+Switching to the `docker-container` driver means buildx now attaches a
+provenance attestation, so `:latest` is published as an **OCI image index**
+(`application/vnd.oci.image.index.v1+json`) with two manifests — `linux/amd64`
+plus an `unknown/unknown` attestation — rather than a single plain manifest.
+Modern Docker handles this fine, but very old clients and some registry mirrors
+do not. If it ever causes trouble, add `provenance: false` to both
+`build-push-action` steps.
