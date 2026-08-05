@@ -53,7 +53,7 @@ RUN DUA_VERSION=$(curl -sILo /dev/null -w '%{url_effective}' \
 RUN curl -Lo /tmp/yazi.zip \
         https://github.com/sxyazi/yazi/releases/latest/download/yazi-x86_64-unknown-linux-musl.zip \
     && unzip /tmp/yazi.zip -d /tmp/yazi \
-    && mv /tmp/yazi/yazi*/yazi /usr/local/bin/ \
+    && mv /tmp/yazi/yazi*/yazi /tmp/yazi/yazi*/ya /usr/local/bin/ \
     && rm -rf /tmp/yazi*
 
 # glow — markdown renderer used by yazi's glow previewer
